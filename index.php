@@ -294,7 +294,7 @@ include "includes/conn.php";
 						success: function(data, textStatus, error)	{
 							if(data == "Success")	{
 								location.reload();
-							}	else	{
+							}	else if (data == "Wrong Credentials")	{
 								Swal.fire(data);
 							}
 						},
