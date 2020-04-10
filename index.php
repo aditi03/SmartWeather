@@ -38,7 +38,7 @@ include "includes/conn.php";
 		<div class="hero" data-bg-image="images/banner.png">
 			<div class="container">
 				<form action="#" class="find-location">
-					<input type="text" placeholder="Find your location...">
+					<input type="text" placeholder="Find your location..." id="autocomplete-input">
 					<input type="submit" value="Find">
 				</form>
 
@@ -274,7 +274,9 @@ include "includes/conn.php";
 							longitude: longitude
 						},
 						success: function(data, textStatus, error) {
+							
 							var res = jQuery.parseJSON(data);
+							console.log(res);
 							n = new Date();
 							y = n.getFullYear();
 							m = n.getMonth();
@@ -397,6 +399,27 @@ include "includes/conn.php";
 			});
 		});
 	</script>
+	
+	<!--Code for autocomplete-->
+	<script>
+	var searchInput = document.getElementById('autocomplete-input');
+	$(document).ready(function () {
+	var autocomplete;
+	console.log("hello");
+    autocomplete = new google.maps.places.Autocomplete((searchInput), {
+        types: ['geocode'],
+    });
+	
+    google.maps.event.addListener(autocomplete, 'place_changed', function () {
+        var near_place = autocomplete.getPlace();
+        console.log(near_place);
+    });
+});
+	</script>
+
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxwa0bPhoi-_ojP7YYXNhL857c9HZuCGM&libraries=places"></script>
+
+
 
 </body>
 

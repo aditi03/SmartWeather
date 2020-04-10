@@ -3,7 +3,7 @@
 $latitude = $_POST['latitude'];
 $longitude = $_POST['longitude'];
 $google_API_key = 'AIzaSyBden4wmQr8UftgK0PWOSxFQ7GSLk_TAkI';
-
+$_SESSION['google_api_key']=$google_API_key;
 $url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' . $latitude . ',' . $longitude . '&sensor=false&key=' . $google_API_key;
 $json = @file_get_contents($url);
 $data = json_decode($json);
