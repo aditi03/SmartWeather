@@ -47,6 +47,24 @@ include "includes/conn.php";
 		<div class="forecast-table">
 			<div class="container">
 				<div class="forecast-container">
+					<div class="today forecast" id="toggle-search-weather" style="display:none">
+							<div class="forecast-header">
+								<div class="day">Today</div>
+								<div class="date" id="date1"></div>
+							</div> <!-- .forecast-header -->
+							<div class="forecast-content">
+								<div id="Search-City" class="location"></div>
+								<div class="degree">
+									<div id="Search-temp" class="num"></div>
+									<div class="forecast-icon">
+										<img id="Search-icon1" alt="" width=90>
+									</div>
+								</div>
+								<span id="Search-precip"><img src="images/icon-umberella.png" style= "width:22px;height:22px;"alt="">20%</span>
+								<span id="Search-wind"><img src="images/icon-wind.png" alt="">18km/h</span>
+								<span id="Search-direction"><img src="images/icon-compass.png" alt=""style= "width:22px;height:22px;">East</span>
+							</div>
+						</div>
 					<div class="today forecast">
 						<div class="forecast-header">
 							<div class="day">Today</div>
@@ -354,7 +372,6 @@ include "includes/conn.php";
 						password: password
 					}
 				}
-				
 			}).then((result) => {
 				console.log(result.value);
 				$.ajax({
@@ -412,15 +429,31 @@ include "includes/conn.php";
     });
 	
     google.maps.event.addListener(autocomplete, 'place_changed', function () {
-        var near_place = autocomplete.getPlace();
-        console.log(near_place);
-    });
+		var near_place = autocomplete.getPlace();
+		console.log(near_place);
+		console.log(near_place["address_components"][0]["long_name"]);
+		var city = near_place["address_components"][0]["long_name"];
+		var url1="http://api.openweathermap.org/data/2.5/weather?q="+city+"&appid=3834874aba8c0049f99e21ed98f0aa04";
+		getWeatherPredictions(url1).then(data=>{console.log(data);
+		document.getElementById("toggle-search-weather").style.display="block";
+		document.getElementById("Search-City").textContent = data["name"];
+		var degreeToFahrenheit= (1.8*(data["main"]["temp"] -273.15)+32).toFixed(2);
+		document.getElementById("Search-temp").innerHTML = degreeToFahrenheit + '<sup>o</sup>F';
+		document.getElementById("Search-wind").textContent = data["wind"]["speed"]+' mph' ;
+		console.log(data["weather"][0]["icon"]);
+		document.getElementById("Search-icon1").src = 'http://openweathermap.org/img/wn/' + data["weather"][0]["icon"] + '.png';
+		});
+	});
+	
+	async function getWeatherPredictions(url1){
+		let response = await fetch(url1);
+		let data = await response.json();
+		return data;
+	}
 });
 	</script>
-
+	
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxwa0bPhoi-_ojP7YYXNhL857c9HZuCGM&libraries=places"></script>
-
-
 
 </body>
 
