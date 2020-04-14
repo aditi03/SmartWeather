@@ -340,7 +340,7 @@ include "includes/conn.php";
 		$("li#login-button.menu-item").click(function() {
 			Swal.fire({
 				title: 'Credentials',
-				html: '<input type="text" id="username" class="swal2-input" placeholder="Enter your username"></input>' +
+				html: '<input type="email" id="username" class="swal2-input" placeholder="Enter your email ID" ></input>' +
 					'<input type="password" id="password" class="swal2-input" placeholder="Enter your password"></input>',
 				confirmButtonText: 'Login',
 				preConfirm: () => {
@@ -381,7 +381,7 @@ include "includes/conn.php";
 		 	Swal.fire('Hello');
 			Swal.fire({
 				title: 'Register Credentials',
-				html: '<input type="text" id="register_username" class="swal2-input" placeholder="Enter your username"></input>' +
+				html: '<input type="email" id="register_username" class="swal2-input" placeholder="Enter your email ID"></input>' +
 					'<input type="password" id="register_password" class="swal2-input" placeholder="Enter your password"></input>'+
 					'<input type="tel" id="phone_number" class="swal2-input" placeholder="Enter your phone number as 123-456-7890"  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"></input>' +
 					'<input type="text" id="location" class="swal2-input" placeholder="Enter your current location"></input>',
