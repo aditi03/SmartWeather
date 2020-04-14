@@ -55,7 +55,7 @@ for($i = 0; $i < count($events_array); $i++)    {
     $time = $event->dates->start->localTime;
     $date_time = $date . ' - ' . $time;
 
-    $description = $event->info;
+    $description = @@$event->info;
 
     $start_price = $event->priceRanges[0]->min;
     $end_price = $event->priceRanges[0]->max;
