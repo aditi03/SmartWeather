@@ -57,7 +57,7 @@ include "includes/conn.php";
             <div class="container">
                 <h1 class="forecast-header">Potential Activities to engage</h1>
                 <div class="container">
-                    <form action="#" onsubmit="return callAPI(this)" class="find-location">
+                    <form action="#" onsubmit="return callAPI()" class="find-location">
                         <input type="text" placeholder="Find your location..." value="<?php echo $_SESSION['city']?>" id="input_city" autocomplete="off">
                         <input type="submit" value="Find">
                     </form>
@@ -88,11 +88,12 @@ include "includes/conn.php";
             // var height = $(window).height();
             // $("#height-block").css("height", height);
             $("#loader").hide();
+            callAPI();
         });
 
 
 
-        function callAPI(e)  {
+        function callAPI()  {
 
             var city = $("#input_city").val();
             $("#loader").show();
