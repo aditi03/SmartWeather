@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 $latitude = $_POST['latitude'];
 $longitude = $_POST['longitude'];
 $google_API_key = 'AIzaSyBden4wmQr8UftgK0PWOSxFQ7GSLk_TAkI';
@@ -36,6 +38,7 @@ if ($status == "OK") {
         'icon' => $data1['current']['weather'][0]['icon'],
         'daily_data' => $data1['daily']
     );
+    $_SESSION['city'] = $city;
     echo json_encode($response);
 } else {
     #echo "Error";

@@ -344,8 +344,8 @@ include "includes/conn.php";
 					'<input type="password" id="password" class="swal2-input" placeholder="Enter your password"></input>',
 				confirmButtonText: 'Login',
 				preConfirm: () => {
-					let username = Swal.getPopup().querySelector('#username').value
-					let password = Swal.getPopup().querySelector('#password').value
+					let username = Swal.getPopup().querySelector('#username').value;
+					let password = Swal.getPopup().querySelector('#password').value;
 					if (username === '' || password === '') {
 						Swal.showValidationMessage(`Username/Password empty`)
 					}
@@ -361,9 +361,9 @@ include "includes/conn.php";
 					type: "POST",
 					data: result.value,
 					success: function(data, textStatus, error) {
-						if (data == "Success") {
+						if (data === "Success") {
 							 location.reload();
-						} else if (data == "Wrong Credentials") {
+						} else if (data === "Wrong Credentials") {
 							Swal.fire(data);
 						}
 					},
