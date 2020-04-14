@@ -340,14 +340,14 @@ include "includes/conn.php";
 		$("li#login-button.menu-item").click(function() {
 			Swal.fire({
 				title: 'Credentials',
-				html: '<input type="text" id="username" class="swal2-input" placeholder="Enter your username"></input>' +
+				html: '<input type="email" id="username" class="swal2-input" placeholder="Enter your email ID" ></input>' +
 					'<input type="password" id="password" class="swal2-input" placeholder="Enter your password"></input>',
 				confirmButtonText: 'Login',
 				preConfirm: () => {
-					let username = Swal.getPopup().querySelector('#username').value
-					let password = Swal.getPopup().querySelector('#password').value
+					let username = Swal.getPopup().querySelector('#username').value;
+					let password = Swal.getPopup().querySelector('#password').value;
 					if (username === '' || password === '') {
-						Swal.showValidationMessage(`Username/Password empty`)
+						Swal.showValidationMessage('Username/Password empty')
 					}
 					return {
 						username: username,
@@ -361,9 +361,9 @@ include "includes/conn.php";
 					type: "POST",
 					data: result.value,
 					success: function(data, textStatus, error) {
-						if (data == "Success") {
+						if (data === "Success") {
 							 location.reload();
-						} else if (data == "Wrong Credentials") {
+						} else if (data === "Wrong Credentials") {
 							Swal.fire(data);
 						}
 					},
@@ -376,28 +376,54 @@ include "includes/conn.php";
 		});
 
 
-		$("#register-button").click(function() {
+		 $("li#register-button.menu-item").click(function() {
+		 	console.log('inside register');
+		 	Swal.fire('Hello');
 			Swal.fire({
-				title: 'Credentials',
-				html: '<input type="text" id="username" class="swal2-input" placeholder="Enter your username"></input>' +
-					'<input type="password" id="password" class="swal2-input" placeholder="Enter your password"></input>',
-				confirmButtonText: 'Login',
+				title: 'Register Credentials',
+				html: '<input type="email" id="register_username" class="swal2-input" placeholder="Enter your email ID"></input>' +
+					'<input type="password" id="register_password" class="swal2-input" placeholder="Enter your password"></input>'+
+					'<input type="tel" id="phone_number" class="swal2-input" placeholder="Enter your phone number as 123-456-7890"  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"></input>' +
+					'<input type="text" id="location" class="swal2-input" placeholder="Enter your current location"></input>',
+				confirmButtonText: 'Register',
 				preConfirm: () => {
-					let username = Swal.getPopup().querySelector('#username').value
-					let password = Swal.getPopup().querySelector('#password').value
-					if (username === '' || password === '') {
-						Swal.showValidationMessage(`Username/Password empty`)
+					let username = Swal.getPopup().querySelector('#register_username').value;
+					let password = Swal.getPopup().querySelector('#register_password').value;
+					let phone_number = Swal.getPopup().querySelector('#phone_number').value;
+					let location = Swal.getPopup().querySelector('#location').value;
+
+					if (username === '' || password === ''|| phone_number===''|| location=== '') {
+						Swal.showValidationMessage('Username/Password/Phone Number/Location empty');
 					}
 					return {
 						username: username,
-						password: password
+						password: password,
+						phone_number: phone_number,
+						location: location
 					}
 				}
-			}).then((result) => {
+			})
+			.then((result) => {console.log(result.value);
+				$.ajax({
+					url: "register-handler.php",
+					type: "POST",
+					data: result.value,
+					success: function(data, textStatus, error) {
+						if (data == "Success") {
+							 location.reload();
+						} else if (data == "Incorrect Data Entered") {
+							Swal.fire(data);
+						}
+					},
+					error: function(jqXHR, textStatus, errorThrown) {
+						console.log(textStatus);
+					}
+				});
+			
 
-				Swal.fire(`Username: ${result.value.username}\nPassword: ${result.value.password}`)
+				//Swal.fire(`Username: ${result.value.username}\nPassword: ${result.value.password}`)
 			});
-		});
+		 });
 	</script>
 	
 	<!--Code for autocomplete-->
