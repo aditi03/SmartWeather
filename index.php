@@ -154,15 +154,26 @@ include "includes/conn.php";
 
 		<div class="fullwidth-block" data-bg-color="#262936">
 			<div class="container">
+				<h2 class="section-title">Emergency Numbers</h2>
 				<div class="row">
-					<div class="col-md-4">
-						<div class="news">
-							<div class="date">06.10</div>
-							<h3><a href="#">Doloremque laudantium totam sequi </a></h3>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo saepe assumenda dolorem modi, expedita voluptatum ducimus necessitatibus. Asperiores quod reprehenderit necessitatibus harum, mollitia, odit et consequatur maxime nisi amet doloremque.</p>
+					<div class="col-md-10">
+						<div>
+							<h1 id="country"></h1>
+							<table>
+								<tr style="color: #bfc1c8">
+									<th scope="row" style="padding:0 15px 0 15px; font-size:20px">Police</th>
+									<th scope="row" style="padding:0 15px 0 15px; font-size:20px">Ambulance</th>
+									<th scope="row" style="padding:0 15px 0 15px; font-size:20px">Fire</th>
+								</tr>
+								<tr>
+									<td style="padding:0 15px 0 15px; font-size:20px" id="police"></td>
+									<td style="padding:0 15px 0 15px; font-size:20px" id="ambulance"></td>
+									<td style="padding:0 15px 0 15px; font-size:20px" id="fire"></td>
+								</tr>
+							</table>	
 						</div>
 					</div>
-					<div class="col-md-4">
+					<!--<div class="col-md-4">
 						<div class="news">
 							<div class="date">06.10</div>
 							<h3><a href="#">Doloremque laudantium totam sequi </a></h3>
@@ -175,7 +186,7 @@ include "includes/conn.php";
 							<h3><a href="#">Doloremque laudantium totam sequi </a></h3>
 							<p>Enim impedit officiis placeat qui recusandae doloremque possimus, iusto blanditiis, quam optio delectus maiores. Possimus rerum, velit cum natus eos. Cumque pariatur beatae asperiores, esse libero quas ad dolorem. Voluptates.</p>
 						</div>
-					</div>
+					</div>-->
 				</div>
 			</div>
 		</div>
@@ -365,6 +376,41 @@ include "includes/conn.php";
 			});
 		}
 		showWeather();
+	</script>
+
+	<script>
+		function emergencyNumbers(){
+			getLocation();
+			var latitude = sessionStorage.getItem('latitude');
+			var longitude = sessionStorage.getItem('longitude');
+			$.ajax({
+				url: "emergency-number.php",
+				type: "POST",
+				data: {
+					latitude: latitude,
+					longitude: longitude
+				},
+				success: function(data, textStatus, error) {
+					data = JSON.parse(data);
+					res = data["data"];
+					// console.log(data["data"]);
+					var country = res[0];
+					var police = res[1];
+					var ambulance = res[2];
+					var fire = res[3];
+					document.getElementById("country").innerHTML = country;
+					document.getElementById("police").innerHTML = police;
+					document.getElementById("ambulance").innerHTML = ambulance;
+					document.getElementById("fire").innerHTML = fire;
+					// console.log(country);
+				},
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                }  
+        });
+        }
+		emergencyNumbers();
 	</script>
 
 	<?php include "includes/footer.php"; ?>
