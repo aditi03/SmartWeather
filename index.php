@@ -193,51 +193,7 @@ include "includes/conn.php";
 
 		<div class="fullwidth-block">
 			<div class="container">
-				<div class="row">
-					<div class="col-md-4">
-						<h2 class="section-title">Application features</h2>
-						<ul class="arrow-feature">
-							<li>
-								<h3>Natus error sit voluptatem accusantium</h3>
-								<p>Doloremque laudantium totam rem aperiam Inventore veritatis et quasi architecto beatae vitae.</p>
-							</li>
-							<li>
-								<h3>Natus error sit voluptatem accusantium</h3>
-								<p>Doloremque laudantium totam rem aperiam Inventore veritatis et quasi architecto beatae vitae.</p>
-							</li>
-							<li>
-								<h3>Natus error sit voluptatem accusantium</h3>
-								<p>Doloremque laudantium totam rem aperiam Inventore veritatis et quasi architecto beatae vitae.</p>
-							</li>
-						</ul>
-					</div>
-					<div class="col-md-4">
-						<h2 class="section-title">Weather analyssis</h2>
-						<ul class="arrow-list">
-							<li><a href="#">Accusantium doloremque laudantium rem aperiam</a></li>
-							<li><a href="#">Eaque ipsa quae ab illo inventore veritatis quasi</a></li>
-							<li><a href="#">Architecto beatae vitae dicta sunt explicabo</a></li>
-							<li><a href="#">Nemo enim ipsam voluptatem quia voluptas</a></li>
-							<li><a href="#">Aspernatur aut odit aut fugit, sed quia consequuntur</a></li>
-							<li><a href="#">Magni dolores eos qui ratione voluptatem sequi</a></li>
-							<li><a href="#">Neque porro quisquam est qui dolorem ipsum quia</a></li>
-						</ul>
-					</div>
-					<div class="col-md-4">
-						<h2 class="section-title">Awesome Photos</h2>
-						<div class="photo-grid">
-							<a href="#"><img src="images/thumb-1.jpg" alt="#"></a>
-							<a href="#"><img src="images/thumb-2.jpg" alt="#"></a>
-							<a href="#"><img src="images/thumb-3.jpg" alt="#"></a>
-							<a href="#"><img src="images/thumb-4.jpg" alt="#"></a>
-							<a href="#"><img src="images/thumb-5.jpg" alt="#"></a>
-							<a href="#"><img src="images/thumb-6.jpg" alt="#"></a>
-							<a href="#"><img src="images/thumb-7.jpg" alt="#"></a>
-							<a href="#"><img src="images/thumb-8.jpg" alt="#"></a>
-							<a href="#"><img src="images/thumb-9.jpg" alt="#"></a>
-						</div>
-					</div>
-				</div>
+				<div id = "clothing" style="font-weight: bold; font-size: 20px; text-align: center;"></div>
 			</div>
 		</div>
 	</main> <!-- .main-content -->
@@ -280,7 +236,7 @@ include "includes/conn.php";
 				temp.className = "degree";
 
 				var feels = document.createElement('div');
-				feels.id = 'hourly_feels' + i;
+				feels.id = 'hourly_feels' +  i;
 				feels.className = "degree";
 
 
@@ -313,7 +269,7 @@ include "includes/conn.php";
 				success: function(data, textStatus, error) {
 
 					var res = jQuery.parseJSON(data);
-					console.log(res);
+					showClothing(res);
 					n = new Date();
 					y = n.getFullYear();
 					m = n.getMonth();
@@ -411,6 +367,40 @@ include "includes/conn.php";
         });
         }
 		emergencyNumbers();
+	</script>
+
+	<script>
+		function showClothing(result)	{
+			var current_temp = result.temp;
+			var rain_possibility = result.hourly_data[0].rain["1h"];
+			var humidity = result.hourly_data[0].humidity;
+
+			// console.log(humidity);
+
+			var text_to_set = "";
+
+			if(current_temp > 70)	{
+				// Summer
+				text_to_set = "It is hot outside, so wear cool layers such as camisoles or T-shirts paired with sunglasses or a cap."
+			}	else if (current_temp <= 70 && current_temp > 50)	{
+				// Pleasant
+				text_to_set = "The weather outside is pleasant so you can wear mild clothing such as hoodies, shirts, trousers, skirts paired with a light scarf and shoes.";
+			}	else if(current_temp <= 50)	{
+				// Winter
+				text_to_set = "It is cold outside, so wear warm clothes such as flannel, sweater, jacket paired with thickscarf, muffler and long boots and also a coat if necessary.";
+			}
+
+			if(rain_possibility > 0.5)	{
+				text_to_set += " It is rainy outside so we recommend you to wear or carry Windsheater, Umbrella and Gum boots.";
+			}
+
+			if((current_temp > 25 && current_temp < 35 && humidity < 30) && (current_temp < 20 && humidity > 95))	{
+				text_to_set += " It is snowing outside so we recommend Jackets, Sweaters, Thermals, Snow boots, Beanies, Ear muffs, Gloves.";
+			}
+
+			$("#clothing").text(text_to_set);
+		}
+		showClothing();
 	</script>
 
 	<?php include "includes/footer.php"; ?>
