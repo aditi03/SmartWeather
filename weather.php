@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 $latitude = $_POST['latitude'];
 $longitude = $_POST['longitude'];
 $google_API_key = 'AIzaSyBden4wmQr8UftgK0PWOSxFQ7GSLk_TAkI';
@@ -34,8 +36,10 @@ if ($status == "OK") {
         'humidity' => $data1['current']['humidity'], // Third Value
         'wind' => $data1['current']['wind_speed'], // Fourth Value
         'icon' => $data1['current']['weather'][0]['icon'],
-        'daily_data' => $data1['daily']
+        'daily_data' => $data1['daily'],
+        'hourly_data'=> $data1['hourly']
     );
+    $_SESSION['city'] = $city;
     echo json_encode($response);
 } else {
     #echo "Error";

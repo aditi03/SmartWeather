@@ -1674,3 +1674,47 @@ form textarea {
     .site-footer .social-links a:hover {
       background: #009ad8;
       color: white; }
+
+ .horizontal-scrollable {
+  width: 100%;
+  background: #323544;
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 50px;
+}
+
+.horizontal-scrollable>.row {
+  overflow-x: auto;
+  white-space: nowrap;
+  display: table-cell;
+  vertical-align: top;
+}
+
+.horizontal-scrollable>.row>.col-xs-4 {
+  display: inline-block;
+  float: none;
+}
+
+.horizontal-scrollable>.row>.col-xs-4>.forecast-content {
+  padding: 50px 20px 10px;
+  text-align: center;
+}
+
+.horizontal-scrollable>.row>.col-xs-4>.forecast-header {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  text-align: center;
+  font-weight: 400;
+}
+
+.col-xs-4 {
+  font-size: 24px;
+  padding-bottom: 20px;
+  padding-top: 18px;
+}
+
+.col-xs-4:nth-child(even) {
+  background-color: #262936;
+}
