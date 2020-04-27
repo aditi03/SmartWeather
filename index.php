@@ -194,6 +194,7 @@ include "includes/conn.php";
 		<div class="fullwidth-block">
 			<div class="container">
 				<div id = "clothing" style="font-weight: bold; font-size: 20px; text-align: center;"></div>
+				<div><img style="height: 300px; display: block; margin-left: auto; margin-right: auto" id="clothing_image" src=""></div>
 			</div>
 		</div>
 	</main> <!-- .main-content -->
@@ -269,7 +270,6 @@ include "includes/conn.php";
 				success: function(data, textStatus, error) {
 
 					var res = jQuery.parseJSON(data);
-					showClothing(res);
 					n = new Date();
 					y = n.getFullYear();
 					m = n.getMonth();
@@ -324,7 +324,7 @@ include "includes/conn.php";
 					}
 					// document.getElementById("date1").innerHTML = m + "/" + d + "/" + y;
 
-
+					showClothing(res);
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
 					console.log("Failure");
@@ -371,36 +371,45 @@ include "includes/conn.php";
 
 	<script>
 		function showClothing(result)	{
+			console.log("Inside method");
+			console.log(result);
 			var current_temp = result.temp;
-			var rain_possibility = result.hourly_data[0].rain["1h"];
+			var rain_possibility = result.hourly_data[0].clouds;
 			var humidity = result.hourly_data[0].humidity;
 
 			// console.log(humidity);
 
 			var text_to_set = "";
+			var image_to_set = "";
 
 			if(current_temp > 70)	{
 				// Summer
 				text_to_set = "It is hot outside, so wear cool layers such as camisoles or T-shirts paired with sunglasses or a cap."
+				image_to_set = "summer.jpg"
 			}	else if (current_temp <= 70 && current_temp > 50)	{
 				// Pleasant
 				text_to_set = "The weather outside is pleasant so you can wear mild clothing such as hoodies, shirts, trousers, skirts paired with a light scarf and shoes.";
+				image_to_set = "pleasant.jpg";
 			}	else if(current_temp <= 50)	{
 				// Winter
 				text_to_set = "It is cold outside, so wear warm clothes such as flannel, sweater, jacket paired with thickscarf, muffler and long boots and also a coat if necessary.";
+				image_to_set = "winter.jpg";
 			}
 
-			if(rain_possibility > 0.5)	{
+			if(rain_possibility > 70)	{
 				text_to_set += " It is rainy outside so we recommend you to wear or carry Windsheater, Umbrella and Gum boots.";
+				image_to_set = "rainy.jpg";
 			}
 
 			if((current_temp > 25 && current_temp < 35 && humidity < 30) && (current_temp < 20 && humidity > 95))	{
 				text_to_set += " It is snowing outside so we recommend Jackets, Sweaters, Thermals, Snow boots, Beanies, Ear muffs, Gloves.";
+				image_to_set = "snow.jpg";
 			}
 
 			$("#clothing").text(text_to_set);
+			$("#clothing_image").attr("src", "images/" + image_to_set);
 		}
-		showClothing();
+		// showClothing();
 	</script>
 
 	<?php include "includes/footer.php"; ?>
