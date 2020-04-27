@@ -44,22 +44,44 @@ include "includes/conn.php";
 			</form>
 
 		</div>
-	</div>
-	<div class="forecast-table">
-		<div class="container">
-			<div class="forecast-container">
-				<div class="today forecast">
-					<div class="forecast-header">
-						<div class="day">Today</div>
-						<div class="date" id="date1"></div>
-					</div> <!-- .forecast-header -->
-					<div class="forecast-content">
-						<div id="City" class="location"></div>
-						<div class="degree">
-							<div id="temp" class="num"></div>
-							<div class="forecast-icon">
-								<img id="icon1" alt="" width=90>
+
+
+
+		<div class="container" id="search-toggle-container" style="height: 350px; width: 500px; position: relative; top: -200px; z-index: 999;display:none; background: #323544;">
+		<div class="today" style=" background: rgba(0, 0, 0, 0.1); padding: 10px; text-align: center; font-weight: 400;">Today</div>
+		<div class="forecast-content" style=" font-size: 15px; font-size: 1.7142857143em; color: white; font-weight: 700;">
+										<div id="Search-City" class="location" style="float:left"></div>
+										<div class="degree" style="float:left;">
+											<div id="Search-temp" class="num"style="float:left; font-size: 90px; font-size: 6.4285714286rem; margin-right: 30px;"></div>
+											<div class="forecast-icon">
+												<img id="Search-icon1" alt="" width=90>
+											</div>
+										</div>
+										<span id="Search-precip" style="float:left; clear:left; padding-right:10px;"><img src="images/icon-umberella.png" style= "width:22px;height:22px;"alt="">20%</span>
+										<span id="Search-wind" style="float:left;padding-right:10px;"><img src="images/icon-wind.png" alt="">18km/h</span>
+										<span id="Search-direction" style="float:left; "><img src="images/icon-compass.png" alt=""style= "width:22px;height:22px;">East</span>
 							</div>
+		</div>
+
+
+		<div class="forecast-table">
+			<div class="container">
+				<div class="forecast-container">
+					
+						
+					<div class="today forecast">
+						<div class="forecast-header">
+							<div class="day">Today</div>
+							<div class="date" id="date1"></div>
+						</div> <!-- .forecast-header -->
+						<div class="forecast-content">
+							<div id="City" class="location"></div>
+							<div class="degree">
+								<div id="temp" class="num"></div>
+								<div class="forecast-icon">
+									<img id="icon1" alt="" width=90>
+								</div>
+
 						</div>
 						<span id="precip"><img src="images/icon-umberella.png" alt="">20%</span>
 						<span id="wind"><img src="images/icon-wind.png" alt="">18km/h</span>
@@ -504,24 +526,41 @@ include "includes/conn.php";
 
 	<!--Code for autocomplete-->
 	<script>
-		var searchInput = document.getElementById('autocomplete-input');
-		$(document).ready(function () {
-			var autocomplete;
-			console.log("hello");
-			autocomplete = new google.maps.places.Autocomplete((searchInput), {
-				types: ['geocode'],
-			});
-
-			google.maps.event.addListener(autocomplete, 'place_changed', function () {
-				var near_place = autocomplete.getPlace();
-				console.log(near_place);
-			});
+	var searchInput = document.getElementById('autocomplete-input');
+	$(document).ready(function () {
+	var autocomplete;
+	console.log("hello");
+    autocomplete = new google.maps.places.Autocomplete((searchInput), {
+        types: ['geocode'],
+    });
+	
+    google.maps.event.addListener(autocomplete, 'place_changed', function () {
+		var near_place = autocomplete.getPlace();
+		console.log(near_place);
+		console.log(near_place["address_components"][0]["long_name"]);
+		var city = near_place["address_components"][0]["long_name"];
+		var url1="http://api.openweathermap.org/data/2.5/weather?q="+city+"&appid=3834874aba8c0049f99e21ed98f0aa04";
+		getWeatherPredictions(url1).then(data=>{console.log(data);
+		document.getElementById("search-toggle-container").style.display="block";
+		document.getElementById("Search-City").textContent = data["name"];
+		var degreeToFahrenheit= (1.8*(data["main"]["temp"] -273.15)+32).toFixed(2);
+		document.getElementById("Search-temp").innerHTML = degreeToFahrenheit + '<sup>o</sup>F';
+		document.getElementById("Search-wind").textContent = data["wind"]["speed"]+' mph' ;
+		console.log(data["weather"][0]["icon"]);
+		document.getElementById("Search-icon1").src = 'http://openweathermap.org/img/wn/' + data["weather"][0]["icon"] + '.png';
 		});
+	});
+	
+	async function getWeatherPredictions(url1){
+		let response = await fetch(url1);
+		let data = await response.json();
+		return data;
+	}
+});
+
 	</script>
-
+	
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxwa0bPhoi-_ojP7YYXNhL857c9HZuCGM&libraries=places"></script>
-
-
 
 </body>
 
