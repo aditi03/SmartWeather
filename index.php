@@ -44,6 +44,7 @@ include "includes/conn.php";
 			</form>
 
 		</div>
+	</div>
 
 
 
@@ -220,6 +221,7 @@ include "includes/conn.php";
 			</div>
 		</div>
 	</main> <!-- .main-content -->
+</div>
 
 	<script src="js/jquery-1.11.1.min.js"></script>
 	<script src="js/plugins.js"></script>
