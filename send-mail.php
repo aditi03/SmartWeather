@@ -10,9 +10,26 @@ require 'PHPMailer/src/Exception.php';
 
 require 'PHPMailer/src/SMTP.php';
 
+function send_error($message)   {
+    echo json_encode(array(
+        "status" => "error",
+        "message" => $message
+    ));
+    exit();
+}
+
+function send_success($message) {
+    echo json_encode(array(
+        "status" => "ok",
+        "message" => $message
+    ));
+    exit();
+}
+
+
 
 $mail = new PHPMailer(true);
-
+// print_r($_SESSION);
 $type = $_GET['type'];  // alert or share
 // print_r($_SESSION['city']);
 if($type == "share")    {
@@ -20,7 +37,7 @@ if($type == "share")    {
     $temperature = $_SESSION['temperature'];
     $humidity = $_SESSION['humidity'];
     $wind = $_SESSION['wind'];
-    $message_body = "Hey, this is " . $_SESSION['username'] . ". Here are some weather details at " . $_SESSION['city'] . ". Temperature: " . $temperature . ", Humidity: " . $humidity . ", Wind: " . $wind . ".";
+    $message_body = "Hey, this is " . $_SESSION['username'] . ". Here are some weather details at " . $_SESSION['city'] . ". Temperature: " . $temperature . ", Humidity: " . $humidity . ", Wind: " . $wind . "<br><br>SmartWeather APP";
 }   else    {
     $url = "https://api.weatherbit.io/v2.0/alerts?city=" . $_SESSION['city'] . "&key=2fc2e1e519d64b74967e64df1b7879d1";
     $curl = curl_init($url);
@@ -36,18 +53,20 @@ if($type == "share")    {
     
     curl_close($curl);
     $decoded = json_decode($curl_response,true);
-   print_r($decoded["alerts"][0]["description"]);
+//    print_r($decoded["alerts"][0]["description"]);
    
     if(isset($decoded["alerts"][0]["description"])) {
       //  print_r($decoded["alerts"][0]);
-      print_r("heel0");
+    //   print_r("heel0");
         $message_body = $decoded["alerts"][0]["description"];
+    }   else    {
+        send_success("no-alerts");
     }
 }
 // echo $message_body;
 
 try {
-    $mail->SMTPDebug = 2;
+    $mail->SMTPDebug = 0;
     $mail->isSMTP();
     $mail->Host = 'smtp.gmail.com';
     $mail->SMTPAuth = true;
@@ -66,13 +85,13 @@ try {
     else    
     {
         $query = "SELECT * from `user` where `location` like '" . $_SESSION['city'] . "';";
-        print_r($query);
+        // print_r($query);
         $result = mysqli_query($conn, $query);
-        print_r(mysqli_num_rows($result));
+        // print_r(mysqli_num_rows($result));
 
         if(mysqli_num_rows($result) > 0)    {
             while($row = mysqli_fetch_assoc($result))    {
-                print_r($row['username']);
+                // print_r($row['username']);
                 $mail->addAddress($row['username']);
             }
         }
@@ -90,8 +109,10 @@ try {
 
     $mail->send();
 } catch(\Exception $e)  {
-    echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
+    send_error('Message could not be sent. Mailer Error: ', $mail->ErrorInfo);
 }
 
+
+send_success("success");
 
 ?>

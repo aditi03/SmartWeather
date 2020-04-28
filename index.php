@@ -225,6 +225,7 @@ include "includes/conn.php";
 			if(isset($_SESSION["username"]))	{
 		?>
 			<div class="fullwidth-block">
+			<h1 class="text-center">Share info with your friends.</h1>
 				<div class="container text-center">
 				<div class="row text-center">
 					<div class="col-md-2" style="float: none; margin: 0 auto;">
@@ -243,9 +244,10 @@ include "includes/conn.php";
 		?>
 
 		<?php 
-			if(isset($_SESSION["username"]) && $_SESSION["username"] == "admin@admin.com")	{
+			if(isset($_SESSION["username"]) && ($_SESSION["username"] == "admin1@admin.com" || $_SESSION["username"] == "admin2@admin.com"))	{
 		?>
 		<div class="fullwidth-block">
+				<h1 class="text-center">Send alerts to users.</h1>
 				<div class="container text-center">
 					<button id="send-alerts" class="btn btn-warning">Send Email Alerts</button>
 				</div>
@@ -454,12 +456,12 @@ include "includes/conn.php";
 			}
 
 			if(rain_possibility > 70)	{
-				text_to_set += " It is rainy outside so we recommend you to wear or carry Windsheater, Umbrella and Gum boots.";
+				text_to_set = " It is rainy outside so we recommend you to wear or carry Windsheater, Umbrella and Gum boots.";
 				image_to_set = "rainy.jpg";
 			}
 
 			if((current_temp > 25 && current_temp < 35 && humidity < 30) && (current_temp < 20 && humidity > 95))	{
-				text_to_set += " It is snowing outside so we recommend Jackets, Sweaters, Thermals, Snow boots, Beanies, Ear muffs, Gloves.";
+				text_to_set = " It is snowing outside so we recommend Jackets, Sweaters, Thermals, Snow boots, Beanies, Ear muffs, Gloves.";
 				image_to_set = "snow.jpg";
 			}
 
@@ -475,7 +477,12 @@ include "includes/conn.php";
 				type: "GET",
 				dataType: 'JSON',
 				success: function(data, textStatus, error)	{
-					console.log("Success");
+					console.log(data);
+					if(data.status === "ok")	{
+						Swal.fire("Mail Sent.");
+					}	else if(data.status === "error")	{
+						Swal.fire("Error Occurred: " + data.message);
+					}
 				},
 				error: function(jqXHR, textStatus, errorThrown)	{
 					console.log(textStatus);
@@ -492,7 +499,15 @@ include "includes/conn.php";
 				type: "GET",
 				dataType: 'JSON',
 				success: function(data, textStatus, error)	{
-					console.log("Success");
+					if(data.status === "ok")	{
+						if(data.message === "no-alerts")	{
+							Swal.fire("No alerts to broadcast.");
+						}	else if(data.message === "success")	{
+							Swal.fire("Mail sent.");
+						}
+					}	else if(data.status === "error")	{
+						Swal.fire("Error occurred.");
+					}
 				},
 				error: function(jqXHR, textStatus, errorThrown)	{
 					console.log(textStatus);
@@ -605,9 +620,6 @@ include "includes/conn.php";
 	</script>
 
 	<script>
-	function sendEmailAlerts(){
-
-	}
 
 
 

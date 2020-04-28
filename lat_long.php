@@ -3,7 +3,7 @@ session_start();
 
 $searchInput = $_POST['search_input'];
 $searchInput = explode(" ", $searchInput);
-$google_API_key = $_SESSION['google_api_key'];
+$google_API_key = 'AIzaSyBden4wmQr8UftgK0PWOSxFQ7GSLk_TAkI';
 
 $address = '';
 foreach ($searchInput as $add)

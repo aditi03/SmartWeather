@@ -11,6 +11,8 @@ $result = mysqli_query($conn, $query);
 
 if(mysqli_num_rows($result) == 1)  {
     $_SESSION["username"] = $username;
+    $row = mysqli_fetch_assoc($result);
+    $_SESSION['city'] = $row['location'];
     echo "Success";
 }   else    {
     echo "Wrong Credentials";
