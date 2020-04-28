@@ -351,8 +351,8 @@ include "includes/conn.php";
 							hour: 'numeric',
 							hour12: true
 						});
-						document.getElementById("hourly_temp" + (i)).innerHTML = res.hourly_data[i].temp + '<sup>o</sup>F';
-						document.getElementById("hourly_feels" + (i)).innerHTML = res.hourly_data[i].feels_like + '<sup>o</sup>F';
+						document.getElementById("hourly_temp" + (i)).innerHTML = 'Temp: '+res.hourly_data[i].temp + '<sup>o</sup>F';
+						document.getElementById("hourly_feels" + (i)).innerHTML = "<small>Feels like: "+res.hourly_data[i].feels_like + '<sup>o</sup>F</small>';
 						document.getElementById("hourly_icon" + (i)).src = 'http://openweathermap.org/img/wn/' + res.hourly_data[i].weather[0].icon + '.png';
 					}
 					// document.getElementById("date1").innerHTML = m + "/" + d + "/" + y;
