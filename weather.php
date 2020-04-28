@@ -39,7 +39,10 @@ if ($status == "OK") {
         'daily_data' => $data1['daily'],
         'hourly_data'=> $data1['hourly']
     );
-    $_SESSION['city'] = $city;
+    $_SESSION['city'] = "Sainte-Genevieve";
+    $_SESSION['temperature'] = $temp;
+    $_SESSION['humidity'] = $data1['current']['humidity'];
+    $_SESSION['wind'] = $data1['current']['wind_speed'];
     echo json_encode($response);
 } else {
     #echo "Error";

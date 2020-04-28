@@ -220,6 +220,39 @@ include "includes/conn.php";
 				<div><img style="height: 300px; display: block; margin-left: auto; margin-right: auto" id="clothing_image" src=""></div>
 			</div>
 		</div>
+
+		<?php
+			if(isset($_SESSION["username"]))	{
+		?>
+			<div class="fullwidth-block">
+				<div class="container text-center">
+				<div class="row text-center">
+					<div class="col-md-2" style="float: none; margin: 0 auto;">
+						<div class="form-group">
+							<input style="width:300px" type="email" class="form-control" id="share-email" aria-describedby="emailHelp" placeholder="Enter email of your friend...">
+						</div>
+					</div>
+					<div class="col-md-4" style="float: none; margin: 0 auto;">
+					<button id="share-weather" class="btn btn-success">Share Weather</button>
+					</div>
+				</div>
+				</div>
+		</div>	
+		<?php
+			}
+		?>
+
+		<?php 
+			if(isset($_SESSION["username"]) && $_SESSION["username"] == "admin@admin.com")	{
+		?>
+		<div class="fullwidth-block">
+				<div class="container text-center">
+					<button id="send-alerts" class="btn btn-warning">Send Email Alerts</button>
+				</div>
+		</div>
+		<?php
+			}
+		?>
 	</main> <!-- .main-content -->
 </div>
 
@@ -292,7 +325,7 @@ include "includes/conn.php";
 					longitude: longitude
 				},
 				success: function(data, textStatus, error) {
-
+					console.log(data);
 					var res = jQuery.parseJSON(data);
 					n = new Date();
 					y = n.getFullYear();
@@ -434,6 +467,42 @@ include "includes/conn.php";
 			$("#clothing_image").attr("src", "images/" + image_to_set);
 		}
 		// showClothing();
+
+		$("#share-weather").click(function()	{
+			var email = $("#share-email").val();
+			$.ajax({
+				url: "send-mail.php?type=share&mail=" + email,
+				type: "GET",
+				dataType: 'JSON',
+				success: function(data, textStatus, error)	{
+					console.log("Success");
+				},
+				error: function(jqXHR, textStatus, errorThrown)	{
+					console.log(textStatus);
+					console.log(errorThrown);	
+				}
+			})
+		});
+
+
+		$("#send-alerts").click(function()	{
+			//var email = $("#share-email").val();
+			$.ajax({
+				url: "send-mail.php?type=alert",
+				type: "GET",
+				dataType: 'JSON',
+				success: function(data, textStatus, error)	{
+					console.log("Success");
+				},
+				error: function(jqXHR, textStatus, errorThrown)	{
+					console.log(textStatus);
+					console.log(errorThrown);	
+				}
+			})
+		});
+
+
+
 	</script>
 
 	<?php include "includes/footer.php"; ?>
@@ -535,6 +604,16 @@ include "includes/conn.php";
 		});
 	</script>
 
+	<script>
+	function sendEmailAlerts(){
+
+	}
+
+
+
+
+
+	</script>
 	<!--Code for autocomplete-->
 	<script>
 	var searchInput = document.getElementById('autocomplete-input');
