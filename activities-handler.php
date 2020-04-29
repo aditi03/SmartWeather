@@ -2,6 +2,8 @@
 
 session_start();
 
+// print_r($_SESSION);
+
 $url = "http://app.ticketmaster.com/discovery/v2/events.json?keyword=" . $_GET['city'] . "&apikey=h6f2NcQRXCZJqtoQmxxXEFc8Lx5sFkxd";
 $curl =  curl_init($url);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -57,9 +59,13 @@ for($i = 0; $i < count($events_array); $i++)    {
 
     $description = @@$event->info;
 
-    $start_price = $event->priceRanges[0]->min;
-    $end_price = $event->priceRanges[0]->max;
-    $price_range = $start_price . " - " . $end_price;
+    if(isset($event->priceRanges))     {
+        $start_price = $event->priceRanges[0]->min;
+        $end_price = $event->priceRanges[0]->max;
+        $price_range = $start_price . " - " . $end_price;
+}   else    {
+    $price_range = "Not Available";
+}
 
     $response_string .= '<tr style="color: #bfc1c8">';
     $response_string .= '<th scope="row">' . ($i + 1) . '</th>';
