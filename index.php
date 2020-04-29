@@ -176,13 +176,13 @@ include "includes/conn.php";
 		</div>
 
 		<div class="fullwidth-block" data-bg-color="#262936">
-			<div class="container">
-				<h2 class="section-title">Emergency Numbers</h2>
+			<div class="container text-center">
+				<h2 class="section-title text-center">Emergency Numbers</h2>
 				<div class="row">
-					<div class="col-md-10">
-						<div>
-							<h1 id="country"></h1>
-							<table>
+					<div class="col-md-12">
+						<div class="text-center">
+							<h1 id="country" class="text-center"></h1>
+							<table style="margin: auto">
 								<tr style="color: #bfc1c8">
 									<th scope="row" style="padding:0 15px 0 15px; font-size:20px">Police</th>
 									<th scope="row" style="padding:0 15px 0 15px; font-size:20px">Ambulance</th>
